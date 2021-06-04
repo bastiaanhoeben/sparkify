@@ -19,7 +19,7 @@ def process_song_file(cur, filepath):
                             'artist_latitude', 'artist_longitude']].values[0])
     cur.execute(artist_table_insert, artist_data)
 
-
+'''
 def process_log_file(cur, filepath):
     # open log file
     df = 
@@ -60,7 +60,7 @@ def process_log_file(cur, filepath):
         # insert songplay record
         songplay_data = 
         cur.execute(songplay_table_insert, songplay_data)
-
+'''
 
 def process_data(cur, conn, filepath, func):
     # get all files matching extension from directory
@@ -86,7 +86,7 @@ def main():
     cur = conn.cursor()
 
     process_data(cur, conn, filepath='data/song_data', func=process_song_file)
-    process_data(cur, conn, filepath='data/log_data', func=process_log_file)
+    #process_data(cur, conn, filepath='data/log_data', func=process_log_file)
 
     conn.close()
 
