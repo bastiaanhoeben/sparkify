@@ -31,9 +31,9 @@ weekday VARCHAR)""")
 
 # INSERT RECORDS
 
-songplay_table_insert = ("""INSERT INTO songplays (songplay_id, start_time, 
-user_id, level, song_id, artist_id, session_id, location, user_agent) VALUES 
-(%s, %s, %s, %s, %s, %s, %s, %s, %s)""")
+songplay_table_insert = ("""INSERT INTO songplays (start_time, user_id, 
+level, song_id, artist_id, session_id, location, user_agent) VALUES 
+(TO_TIMESTAMP(%s/1000), %s, %s, %s, %s, %s, %s, %s)""")
 
 user_table_insert = ("""INSERT INTO users (user_id, first_name, last_name, 
 gender, level) VALUES (%s, %s, %s, %s, %s) ON CONFLICT (user_id) DO NOTHING""")
@@ -50,10 +50,14 @@ year, weekday) VALUES (%s, %s, %s, %s, %s, %s, %s)""")
 
 # FIND SONGS
 
-song_select = ("""
-""")
+song_select = ("""SELECT songs.song_id, artists.artist_id FROM songs INNER 
+JOIN artists ON songs.artist_id = artists.artist_id WHERE songs.title = %s 
+AND artists.name = %s AND songs.duration = %s""")
 
 # QUERY LISTS
 
-create_table_queries = [songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
-drop_table_queries = [songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
+create_table_queries = [songplay_table_create, user_table_create,
+                        song_table_create, artist_table_create,
+                        time_table_create]
+drop_table_queries = [songplay_table_drop, user_table_drop, song_table_drop,
+                      artist_table_drop, time_table_drop]

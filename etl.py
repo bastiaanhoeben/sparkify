@@ -28,10 +28,11 @@ def process_log_file(cur, filepath):
     df = df[df['page'] == 'NextSong']
 
     # convert timestamp column to datetime
-    t = df.to_datetime(df['ts'], unit= 'ms')
+    t = pd.to_datetime(df['ts'], unit= 'ms')
     
     # insert time data records
-    time_data = (t.values, t.dt.hour, t.dt.day, t.dt.week,
+    time_data = (t.values, t.dt.hour, t.dt.day,
+                 t.dt.isocalendar().week.astype(int),
                  t.dt.month, t.dt.year, t.dt.weekday)
     column_labels = ('start_time', 'hour', 'day', 'week', 'month', 'year',
                      'weekday')
@@ -52,16 +53,18 @@ def process_log_file(cur, filepath):
     for index, row in df.iterrows():
         
         # get songid and artistid from song and artist tables
+        print(row.song)
         cur.execute(song_select, (row.song, row.artist, row.length))
         results = cur.fetchone()
-        
+
         if results:
             songid, artistid = results
         else:
             songid, artistid = None, None
 
         # insert songplay record
-        songplay_data = 
+        songplay_data = (row.ts, row.userId, row.level, songid, artistid,
+                         row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
