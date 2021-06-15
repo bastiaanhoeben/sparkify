@@ -44,7 +44,7 @@ pipelines, go through the following steps:
  
 2. Start up the PostgreSQL database service in the background:
    ```
-   docker-compose up
+   docker-compose up -d
    ```
 
 2. Create a virtual environment and activate it:
